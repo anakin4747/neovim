@@ -52,16 +52,6 @@ let s:is_sh = get(b:, "is_sh", get(g:, "is_sh", 0))
 let s:is_bash = get(b:, "is_bash", get(g:, "is_bash", 0))
 let s:is_kornshell = get(b:, "is_kornshell", get(g:, "is_kornshell", 0))
 
-if s:is_bash
-  if exists(':terminal') == 2
-    command! -buffer -nargs=1 ShKeywordPrg silent exe ':hor term bash -c "help "<args>" 2>/dev/null || man "<args>""'
-  else
-    command! -buffer -nargs=1 ShKeywordPrg echo system('bash -c "help <args>" 2>/dev/null || MANPAGER= man "<args>"')
-  endif
-  setlocal keywordprg=:ShKeywordPrg
-  let b:undo_ftplugin ..= " | setl kp< | sil! delc -buffer ShKeywordPrg"
-endif
-
 if (s:is_sh || s:is_bash || s:is_kornshell) && executable('shellcheck')
   if !exists('current_compiler')
     compiler shellcheck
